@@ -43,8 +43,8 @@ def scrape_footer(url: str) -> list:
             for n_item in newline_list:
                 carriage_list = n_item.split('\r')
                 for c_item in carriage_list:
-                    if c_item not in text_list:
-                        if len(c_item.strip()) > 0:
+                    if c_item.strip() not in text_list:
+                        if len(c_item.strip()) > 1:
                             text_list.append(c_item.strip())
 
     return text_list
