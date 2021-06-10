@@ -13,6 +13,7 @@ __status__ = "Production"
 
 import json
 import requests
+import os
 from bs4 import BeautifulSoup
 
 
@@ -85,5 +86,5 @@ if __name__ == '__main__':
     print(json.dumps(web_designer_dict, indent=4, ensure_ascii=False))
 
     # Write output to json file
-    with open('web_design_footers.json', 'w') as f:
+    with open(f'{os.path.dirname(__file__)}/web_design_footers.json', 'w') as f:
         json.dump(web_designer_dict, f, indent=4, ensure_ascii=False)
