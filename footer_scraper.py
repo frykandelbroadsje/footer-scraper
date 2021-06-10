@@ -36,8 +36,6 @@ def scrape_footer(url: str) -> list:
     for div in divs:
         # breakpoint()
         if len(div.text) > 0:
-            div_text = div.text.strip().replace('\n', ' ')
-            div_text = div_text.replace('\r', '\n')
             div_text = div.text.strip()
             newline_list = div_text.split('\n')
             for n_item in newline_list:
