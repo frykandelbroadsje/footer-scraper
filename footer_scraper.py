@@ -35,7 +35,7 @@ def scrape_footer(url: str) -> list:
     text_list = list()
     for div in divs:
         # breakpoint()
-        if len(div.text.strip)() > 1:
+        if len(div.text.strip()) > 1:
             div_text = div.text.strip()
             newline_list = div_text.split('\n')
             for n_item in newline_list:
@@ -64,7 +64,7 @@ def collect_footers(url_list: list) -> dict:
             footer_text = scrape_footer(url)
             footer_dict.update({url: footer_text})
             print(f"Scraped url \'{url}\'.")
-        except AttributeError as e:
+        except Exception as e:
             print(f"Could not scrape url \'{url}\'.")
             print(e)
 
