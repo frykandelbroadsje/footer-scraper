@@ -42,8 +42,9 @@ def scrape_footer(url: str) -> list:
             for n_item in newline_list:
                 carriage_list = n_item.split('\r')
                 for c_item in carriage_list:
-                    if c_item in text_list:
-                        text_list.append(c_item)
+                    if c_item not in text_list:
+                        if len(c_item.strip()) > 0:
+                            text_list.append(c_item.strip())
 
     return text_list
 
@@ -60,9 +61,13 @@ def collect_footers(url_list: list) -> dict:
 
     footer_dict = dict()
     for url in url_list:
-        footer_text = scrape_footer(url)
-        footer_dict.update({url: footer_text})
-        print(f"Url {url} scraped.")
+        try:
+            footer_text = scrape_footer(url)
+            footer_dict.update({url: footer_text})
+            print(f"Url {url} scraped.")
+        except AttributeError as e:
+            print(f"Could not scrape url {url}")
+            print(e)
 
     return footer_dict
 
