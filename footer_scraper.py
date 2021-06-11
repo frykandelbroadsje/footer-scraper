@@ -17,14 +17,17 @@ import os
 from bs4 import BeautifulSoup
 
 
-def scrape_footer(url: str) -> list:
+def scrape_footer(session: requests.Session = None, url: str = None) -> list:
     """
     Scrape the footers from a webpage given a url
     :param url: the url to the website
     :return: a list of all unique bodies of text in the footer
     """
 
-    with requests.Session() as session:
+    if session is None:
+        with requests.Session() as session:
+            website_html = session.get(url).text
+    else:
         website_html = session.get(url).text
 
     soup = BeautifulSoup(website_html, 'html.parser')
@@ -59,14 +62,15 @@ def collect_footers(url_list: list) -> dict:
         url_list = [url_list]
 
     footer_dict = dict()
-    for url in url_list:
-        try:
-            footer_text = scrape_footer(url)
-            footer_dict.update({url: footer_text})
-            print(f"Scraped url \'{url}\'.")
-        except Exception as e:
-            print(f"Could not scrape url \'{url}\'.")
-            print(e)
+    with requests.Session() as session:
+        for url in url_list:
+            try:
+                footer_text = scrape_footer(session, url)
+                footer_dict.update({url: footer_text})
+                print(f"Scraped url \'{url}\'.")
+            except Exception as e:
+                print(f"Could not scrape url \'{url}\'.")
+                print(e)
 
     return footer_dict
 
