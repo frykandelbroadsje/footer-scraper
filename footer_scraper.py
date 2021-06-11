@@ -15,6 +15,7 @@ import json
 import requests
 import os
 from bs4 import BeautifulSoup
+from time import sleep
 
 
 def scrape_footer(session: requests.Session = None, url: str = None) -> list:
@@ -69,10 +70,14 @@ def collect_footers(url_list: list) -> dict:
     footer_dict = dict()
     with requests.Session() as session:
         for url in url_list:
+            if not (url.startswith( 'http' )):
+                url = "https://" + url
+                print(url)
             try:
-                footer_text = scrape_footer(session, url)
+                footer_text = scrape_footer(session, url.strip())
                 footer_dict.update({url: footer_text})
                 print(f"Scraped url \'{url}\'.")
+                sleep(1)
             except Exception as e:
                 print(f"Could not scrape url \'{url}\'. Cause:")
                 print(e)
@@ -82,12 +87,14 @@ def collect_footers(url_list: list) -> dict:
 
 
 if __name__ == '__main__':
-    web_designer_urls = ['https://www.studiospijker.nl/studio/',
-                         'https://www.studioplakband.com/',
-                         'https://nieteenechtewebdesigner.org/',
-                         'https://dsignonline.nl/',
-                         'https://www.convident.nl/',
-                         'https://www.webnexus.nl/']
+    inputfile = open("domains.txt","r")
+    web_designer_urls = inputfile.readlines()
+    # web_designer_urls = ['https://www.studiospijker.nl/studio/',
+    #                      'https://www.studioplakband.com/',
+    #                      'https://nieteenechtewebdesigner.org/',
+    #                      'https://dsignonline.nl/',
+    #                      'https://www.convident.nl/',
+    #                      'https://www.webnexus.nl/']
 
     web_designer_dict = collect_footers(web_designer_urls)
 
