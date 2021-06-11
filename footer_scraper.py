@@ -36,16 +36,21 @@ def scrape_footer(session: requests.Session = None, url: str = None) -> list:
     divs = footer.find_all('div')
 
     text_list = list()
+    # Loop through all 'div' elements in the footer
     for div in divs:
-        # breakpoint()
+        # Only consider divs with text of length greater than 1
         if len(div.text.strip()) > 1:
             div_text = div.text.strip()
+            # Split div text string along newline characters
             newline_list = div_text.split('\n')
             for n_item in newline_list:
+                # Split newline items along carriage returns
                 carriage_list = n_item.split('\r')
                 for c_item in carriage_list:
+                    # Only append text_list with string if string not in text_list yet
                     if c_item.strip() not in text_list:
                         if len(c_item.strip()) > 1:
+                            # Only append text list with string if string length greater than 1
                             text_list.append(c_item.strip())
 
     return text_list
